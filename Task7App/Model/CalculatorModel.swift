@@ -7,9 +7,22 @@
 
 import Foundation
 
-struct CalculatorModel {
+protocol CalculatorModelDelegate: AnyObject {
+    func didUpdateTotal(total: Int)
+}
 
-    static func plusCalculate (num1: Int, num2: Int) -> Int {
-        num1 + num2
+class CalculatorModel {
+
+    weak var delegate: CalculatorModelDelegate? {
+        didSet {
+            delegate?.didUpdateTotal(total: total)
+        }
+    }
+
+    private(set) var total: Int = 0
+
+    func plusCalculate(num1: Int, num2: Int) {
+        total = num1 + num2
+        delegate?.didUpdateTotal(total: total)
     }
 }
